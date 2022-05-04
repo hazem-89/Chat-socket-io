@@ -1,30 +1,44 @@
-import { useSockets } from "../context/socket.context";
-import UserInputComponent from "../components/userInputComponent";
-import {Rooms} from "../components/Rooms";
-import { useRef } from "react";
-import {ISocketContext }from "../context/socket.context"
-
+import { useSockets } from '../context/socket.context';
+import UserInputComponent from '../components/userInputComponent';
+import { Rooms } from '../components/Rooms';
+import { CSSProperties, useRef, useState } from 'react';
+import { ISocketContext } from '../context/socket.context';
 
 export default function Home() {
-  const {socket, username, setUsername} = useSockets();
-  const usernameRef = useRef(null)
-
+  const { socket, username, setUsername } = useSockets();
+  const usernameRef = useRef(null);
+  const [isInputOpen, setIsInputOpen] = useState(true);
+  
   return (
-  <div>
-    {!username && (
-      <div>
-        <UserInputComponent />
-      </div>
-    )}
-    {username && (
-        <div >
-          <Rooms />
+    <div style={rootstyle}>
+      <Rooms />
+      {!username ? (
+        <div style={usernameInputDivStyle}>
+          <UserInputComponent />
         </div>
+      ) : (
+        null
       )}
-  </div>
-  )
+    </div>
+  );
 }
 
+const rootstyle: CSSProperties = {
+  width: '100%',
+  height: '100%',
+  border: '2px solid blue',
+};
+
+const usernameInputDivStyle: CSSProperties = {
+  position: "absolute",
+  top: 0,
+  height: "100vh",
+  width: "100%",
+  background: "rgba(0, 0, 0, 0.9)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
+}
 
 // import React from 'react';
 // import ReactDOM from 'react-dom/client';
