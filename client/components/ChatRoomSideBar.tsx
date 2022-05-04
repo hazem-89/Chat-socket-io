@@ -1,7 +1,8 @@
 import React, { CSSProperties, useState } from 'react'
+import AddNewRoom from './AddNewRoom';
 
  const ChatRoomSideBar = () => {
- const [isNewPostOpen, setIsNewPostOpen] = useState(false);
+ const [isAddNewRoomOpen, setIsAddNewRoomOpen] = useState(false);
 
   return (
     <div style={sidebar}>
@@ -9,8 +10,12 @@ import React, { CSSProperties, useState } from 'react'
         <h4 style={rooms}>Name of another open room</h4>
         <h4 style={rooms}>Name of another open room</h4>
 
-        <button style={btn} onClick={() => setIsNewPostOpen(true)}>+</button>
-    
+        <button style={btn} onClick={() => setIsAddNewRoomOpen(true)}>+</button>
+
+    <AddNewRoom
+        open={isAddNewRoomOpen}
+        onClose={() => setIsAddNewRoomOpen(false)}
+      ></AddNewRoom>
     </div>
   )
 }
@@ -22,7 +27,7 @@ const btn: CSSProperties = {
   zIndex: 100,
   marginLeft: '50px',
   fontSize: '2.5rem',
-  color: '#fff',
+  color: '#333',
 }
 
 const sidebar: CSSProperties = {
