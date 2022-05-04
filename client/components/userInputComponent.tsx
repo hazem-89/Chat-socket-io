@@ -33,6 +33,7 @@ const UserInputComponent = () => {
 }
 
 const rootstyle: CSSProperties = {
+    border: "2px solid red"
 
 }
 
