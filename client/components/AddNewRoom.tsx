@@ -12,7 +12,7 @@ const AddNewRoom = ({ open, onClose }) => {
 
     const [roomName, setRoomName] = useState<string>('');
   const [newRoom, setNewRoom] = useState({});
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   //const { currentUser } = userContext();
 
   const ref = useRef<Element>(null);
@@ -35,7 +35,7 @@ const AddNewRoom = ({ open, onClose }) => {
     //const newWallPost = { username: currentUser, body: roomName };
     setNewRoom({ currentUser, roomName });
     //let response = await makeReq('/newroom/', 'POST', newRoom);
-    navigate('/');
+    //navigate('/');
     return;
   };
 
@@ -55,14 +55,12 @@ return ReactDOM.createPortal(
       <div style={overlayStyles} />
       <div style={modalStyles}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ fontFamily: 'Permanent Marker, cursive' }}>
+          <h2>
             Create a new room
-          </h2>
-          {/* <h4 style={{ fontFamily: 'Permanent Marker, cursive' }}>
-            {currentUser}
-          </h4> */}
+            </h2>
           <form onSubmit={handleOnSubmit}>
             <input
+            style={{ width: '100%', height: '3rem', marginBottom: '1rem', fontSize: '1.5rem' }}
               type="text"
               value={roomName}
               onChange={handleOnChange}
@@ -88,7 +86,7 @@ const modalStyles: CSSProperties = {
   top: '56%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  backgroundColor: 'pink',
+  backgroundColor: '#999',
   padding: '50px',
   zIndex: 1000,
   width: '30rem',
@@ -126,8 +124,8 @@ const submitButtonStyle: CSSProperties = {
   color: 'white',
   backgroundColor: '#777',
   border: 'none',
+  borderRadius: '10px',
   fontSize: '1.3rem',
-  fontFamily: 'Permanent Marker, cursive',
 };
 
 export default AddNewRoom;

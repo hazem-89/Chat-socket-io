@@ -27,7 +27,7 @@ const btn: CSSProperties = {
   zIndex: 100,
   marginLeft: '50px',
   fontSize: '2.5rem',
-  color: '#fff',
+  color: '#333',
 }
 
 const sidebar: CSSProperties = {
