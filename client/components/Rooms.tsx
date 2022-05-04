@@ -1,7 +1,11 @@
 import React from 'react'
+import ChatRoomSideBar from './ChatRoomSideBar'
 
 export const Rooms = () => {
   return (
-    <div>Rooms</div>
+    <div>
+      <h1>New Room</h1>
+    <ChatRoomSideBar/>
+    </div>
   )
 }
