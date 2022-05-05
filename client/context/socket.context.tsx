@@ -1,7 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
-import { SOCKET_URL } from "../config/default";
-import { ServerToClientEvents, ClientToServerEvents } from '../../server/types'
+import { createContext, useContext, useEffect, useState } from 'react';
+import io, { Socket } from 'socket.io-client';
+import { SOCKET_URL } from '../config/default';
+import { ServerToClientEvents, ClientToServerEvents, ServerSocketData } from '../../server/types';
+
+/**
+ * rooms lista
+ * nuvarande rum
+ * chatthistorik i lista
+ * chatt: content, isSelf, user
+ *
+ */
 
 export interface ISocketContext {
   socket: Socket;
@@ -11,11 +19,15 @@ export interface ISocketContext {
   //chatHistory: string[];
   setUsername: Function;
   createRoom: Function;
+  sendMessage: Function;
 }
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SOCKET_URL, );
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
+  io(SOCKET_URL);
+
 const SocketContext = createContext<ISocketContext>({
   socket,
   setUsername: () => false,
+  sendMessage: () => false,
   createRoom: () => false,
   currentRoom: ''
 
@@ -30,18 +42,34 @@ const SocketProvider = (props: any) => {
   const [currentRoom, setCurrentRoom] = useState("");
   //const [rooms, setRooms] = useState<string[]>([]);
 
-    useEffect(() =>  {
-    socket.connect();
+  useEffect(() => {
+    socket.on('welcome', (data) => {
+      console.log(data, socket.id);
+
+      socket.on('connected', (username) => {
+        console.log(username);
+      });
+    });
+
 
     socket.on("roomList", (rooms) => {
-    console.log(rooms)
+      console.log(rooms)
     })
 
-   socket.on("joined", (room) => {
+    socket.on("joined", (room) => {
       console.log("Joined room: ", room)
     })
+  }, []);
 
-  }, [])
+  socket.on('connect_error', (err) => {
+    console.log('ogiltigt användarnamn');
+  });
+
+  const sendMessage = (message: string) => {
+    socket.emit('chat-message', (message) => {
+      console.log('here is ' + message);
+    });
+  };
 
   socket.on('left', (room) => {
     console.log('Left room: ', room)
@@ -51,7 +79,7 @@ const SocketProvider = (props: any) => {
 
   let joinedRoom: string;
 
-    const createRoom = (room) => {
+  const createRoom = (room) => {
     joinedRoom = room;
     socket.emit('join', room);
     setCurrentRoom(room);
@@ -62,9 +90,9 @@ const SocketProvider = (props: any) => {
 
   return (
     <SocketContext.Provider
-    value={{socket, username, setUsername, createRoom, currentRoom, setCurrentRoom: joinedRoom}}
-    {...props}
-  />
+      value={{ socket, username, setUsername, sendMessage, createRoom, currentRoom, setCurrentRoom: joinedRoom }}
+      {...props}
+    />
   )
 }
 
