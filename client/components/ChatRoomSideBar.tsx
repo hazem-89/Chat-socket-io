@@ -5,7 +5,7 @@ import { useSockets } from '../context/socket.context';
 
 const ChatRoomSideBar = () => {
   const [isAddNewRoomOpen, setIsAddNewRoomOpen] = useState(false);
-  const { setUsername } = useSockets();
+  const { setUsername, currentRoom } = useSockets();
 
 
   const handleOnLogOut = () => {
@@ -16,7 +16,7 @@ const ChatRoomSideBar = () => {
   return (
     <div style={sidebar}>
       <div>
-        <h4 style={rooms}>Name of current room</h4>
+        <h4 style={rooms}>{currentRoom}</h4>
         <h4 style={rooms}>Name of another open room</h4>
         <h4 style={rooms}>Name of another open room</h4>
 

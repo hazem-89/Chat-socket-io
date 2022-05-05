@@ -7,7 +7,7 @@ export interface ISocketContext {
   socket: Socket;
   username?: string;
   //rooms: string[];
-  //currentRoom: string;
+  currentRoom: string;
   //chatHistory: string[];
   setUsername: Function;
   createRoom: Function;
@@ -17,7 +17,7 @@ const SocketContext = createContext<ISocketContext>({
   socket,
   setUsername: () => false,
   createRoom: () => false,
-
+  currentRoom: ''
 
 });
 
@@ -27,13 +27,14 @@ socket.on("roomList", (rooms) => {
 
 const SocketProvider = (props: any) => {
   const [username, setUsername] = useState("");
-  const [rooms, setRooms] = useState<string[]>([]);
+  const [currentRoom, setCurrentRoom] = useState("");
+  //const [rooms, setRooms] = useState<string[]>([]);
 
     useEffect(() =>  {
     socket.connect();
 
     socket.on("roomList", (rooms) => {
-    //console.log(rooms)
+    console.log(rooms)
     })
 
    socket.on("joined", (room) => {
@@ -48,13 +49,14 @@ const SocketProvider = (props: any) => {
     const createRoom = (room) => {
     joinedRoom = room;
     socket.emit('join', room);
+    setCurrentRoom(room);
     console.log(room);
     return;
   }
 
   return (
     <SocketContext.Provider
-    value={{socket, username, setUsername, createRoom}}
+    value={{socket, username, setUsername, createRoom, currentRoom, setCurrentRoom: joinedRoom}}
     {...props}
   />
   )
