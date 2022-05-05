@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import {useSockets} from '../context/socket.context'
 
 const ChatBubble = () => {
-    const { username } = useSockets();
+    const { username, socket } = useSockets();
   return (
     <>
       <span style={usernameStyle}>{username}</span>

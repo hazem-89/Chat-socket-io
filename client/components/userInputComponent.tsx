@@ -8,10 +8,10 @@ interface Props {
 }
 
 const UserInputComponent = () => {
-  const { username, setUsername } = useSockets();
+  const { username, setUsername, socket } = useSockets();
   const [value, setValue] = useState<string>('');
   const parent = useRef<Element>();
-//    const wrapper = document.body;
+  //    const wrapper = document.body;
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -25,20 +25,22 @@ const UserInputComponent = () => {
       document.body.appendChild(div);
       parent.current = div;
     }
-
   }, []);
-
 
   // const DOMdiv = document.getElementById('usernameInput')
 
   const handleOnChange = (e: any) => {
-
     setValue(e.target.value);
   };
 
   const handleOnSubmit = () => {
-    setUsername(value);
-    localStorage.setItem('user', value);
+
+      setUsername(value);
+      socket.auth = { username: value };
+      // localStorage.setItem('user', value);
+      socket.connect();
+    
+     
   };
 
   return (
@@ -51,6 +53,7 @@ const UserInputComponent = () => {
             type="text"
             value={value}
             onChange={handleOnChange}
+            minLength={3}
           ></input>
           <button className="button" type="submit">
             Done
