@@ -9,6 +9,15 @@ const EVENTS = {
 export function socket({ io }: { io: Server }) {
   logger.info("Socket connected");
 
+  io.use((socket: Socket, next) => {
+    const currentRoom: string = socket.handshake.auth.currentRoom;
+    if (!currentRoom || currentRoom === "") {
+      return next(new Error("Invalid room name"));
+    }
+    socket.data.currentRoom = currentRoom;
+    next();
+  });
+
   io.on(EVENTS.connection, (socket: Socket) => {
     logger.info(`User is connected ${socket.id}`);
 
@@ -28,6 +37,7 @@ export function socket({ io }: { io: Server }) {
       }
 
       socket.emit("joined", room);
+      //socket.data.currentRoom = room;
     });
   });
 }

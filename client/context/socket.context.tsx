@@ -43,6 +43,11 @@ const SocketProvider = (props: any) => {
 
   }, [])
 
+  socket.on('left', (room) => {
+    console.log('Left room: ', room)
+  });
+
+
 
   let joinedRoom: string;
 
@@ -50,6 +55,7 @@ const SocketProvider = (props: any) => {
     joinedRoom = room;
     socket.emit('join', room);
     setCurrentRoom(room);
+    socket.connect();
     console.log(room);
     return;
   }

@@ -27,6 +27,8 @@ export interface InterServerEvents {
  * Datan som sparas här är datan som kommer behövas över tid senare.
  */
 export interface ServerSocketData {
-  name: string;
-  age: number;
+  username: string;
+  currentRoom: string;
+  //chatHistory: string[];
+  //rooms: string[];
 }

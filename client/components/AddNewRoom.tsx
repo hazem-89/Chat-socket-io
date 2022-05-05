@@ -48,6 +48,8 @@ const AddNewRoom = ({ open, onClose }) => {
       console.log('Ogiltigt namn på rum...');
       return;
     }
+    socket.auth = { currentRoom: roomName }
+    socket.connect();
     createRoom(room);
     onClose(true);
     return;
