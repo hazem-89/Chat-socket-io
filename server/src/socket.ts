@@ -1,10 +1,9 @@
-
-import { Server, Socket } from "socket.io";
-import logger from "./utils/logger";
+import { Server, Socket } from 'socket.io';
+import logger from './utils/logo';
 
 const EVENTS = {
-  connection: "connection",
-}
+  connection: 'connection',
+};
 
 function socket({ io }: { io: Server }) {
   logger.info('Socket connected');
@@ -30,13 +29,9 @@ function socket({ io }: { io: Server }) {
       console.log(message);
       // io.emit('chat message', message);
     });
-    socket.on("disconnect", () => {
-     io.emit("message", "User left the chat")
-   })
 
     // socket.on('send-message', (message) => {});
   });
-
 }
 
 export default socket;

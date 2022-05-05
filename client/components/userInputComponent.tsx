@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import { useState, CSSProperties, useEffect, useRef } from 'react';
 import { useSockets } from '../context/socket.context';
-import io, { Socket } from "socket.io-client";
 
 interface Props {
   isOpen: boolean;
@@ -9,14 +8,11 @@ interface Props {
 }
 
 const UserInputComponent = () => {
-
-  const { username, setUsername, socket, message } = useSockets();
+  const { username, setUsername, socket } = useSockets();
   const [value, setValue] = useState<string>('');
   const parent = useRef<Element>();
   //    const wrapper = document.body;
 
-
-//    const wrapper = document.body;
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) setUsername(user);
@@ -29,13 +25,11 @@ const UserInputComponent = () => {
       document.body.appendChild(div);
       parent.current = div;
     }
-
   }, []);
 
   // const DOMdiv = document.getElementById('usernameInput')
 
   const handleOnChange = (e: any) => {
-
     setValue(e.target.value);
   };
 
@@ -49,25 +43,18 @@ const UserInputComponent = () => {
      
   };
 
-
   return (
     <>
       <div style={rootstyle}>
-          <div className="welcom-msg">
-               {message}
-         <br/>
         <p>Choose your username:</p>
-          </div>
         <form onSubmit={handleOnSubmit}>
           <input
             style={inputStyle}
             type="text"
             value={value}
             onChange={handleOnChange}
-
             minLength={3}
           ></input>
-
           <button className="button" type="submit">
             Done
           </button>
@@ -91,7 +78,6 @@ const inputStyle: CSSProperties = {
   height: '2rem',
   width: '10rem',
   marginRight: '1rem',
-  padding: '0.5em',
 };
 
 export default UserInputComponent;
