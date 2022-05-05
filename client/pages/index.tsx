@@ -5,14 +5,14 @@ import { CSSProperties, useRef, useState } from 'react';
 import { ISocketContext } from '../context/socket.context';
 
 export default function Home() {
-  const { socket, username, setUsername } = useSockets();
-  const usernameRef = useRef(null);
+  const { socket, username, setUsername, localUsernameData } = useSockets();
   const [isInputOpen, setIsInputOpen] = useState(true);
+  
   
   return (
     <div style={rootstyle}>
       <Rooms />
-      {!username ? (
+      {!localUsernameData ? (
         <div style={usernameInputDivStyle}>
           <UserInputComponent />
         </div>

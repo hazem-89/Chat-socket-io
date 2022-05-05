@@ -3,7 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import config from "config";
-import logger from "./utils/logo";
+import logger from "./utils/logger";
 import socket from "./socket"
 
 const port = config.get<number>("port")
