@@ -1,4 +1,4 @@
-//alla evernts som kommer ifrån servern till clienten
+//alla events som kommer ifrån servern till clienten
 export interface ServerToClientEvents {
   "chat message": (message: string) => void;
   welcome: (message: string) => void;
@@ -23,5 +23,4 @@ export interface InterServerEvents {
 export interface ServerSocketData {
   name: string;
   age: number;
-  room: string;
 }
