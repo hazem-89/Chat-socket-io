@@ -1,4 +1,5 @@
 
+
 //alla events som kommer ifrån servern till clienten
 export interface ServerToClientEvents { 
   "chat message": (message: string) => void;
@@ -9,6 +10,7 @@ export interface ServerToClientEvents {
 /** Alla events som skickas från clienten till server */
 export interface ClientToServerEvents { 
   "chat-message": (message: any) => void;
+
 }
 
 /** typer av funktioner som körs inom servern */
@@ -24,5 +26,4 @@ export interface InterServerEvents {
  */
 export interface ServerSocketData {
   username: string;
-
 }

@@ -1,12 +1,15 @@
-import React, { CSSProperties, useState } from 'react';
+
+import React, { CSSProperties, useState } from 'react'
+import { useSockets } from '../context/socket.context';
+
 import AddNewRoom from './AddNewRoom';
 import { Icon } from '@iconify/react';
 import { useSockets } from '../context/socket.context';
 
+
 const ChatRoomSideBar = () => {
   const [isAddNewRoomOpen, setIsAddNewRoomOpen] = useState(false);
-  const { setUsername } = useSockets();
-
+  const { localUsernameData } = useSockets();
 
   const handleOnLogOut = () => {
     localStorage.removeItem('user');
@@ -16,6 +19,9 @@ const ChatRoomSideBar = () => {
   return (
     <div style={sidebar}>
       <div>
+         <div style={sidebar}>
+        {localUsernameData ? <h3>{localUsernameData}</h3> : <div>username
+           </div>}
         <h4 style={rooms}>Name of current room</h4>
         <h4 style={rooms}>Name of another open room</h4>
         <h4 style={rooms}>Name of another open room</h4>
