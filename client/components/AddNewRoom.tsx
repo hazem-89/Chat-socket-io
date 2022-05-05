@@ -1,43 +1,38 @@
 import React, { CSSProperties, FormEvent, useContext, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import ReactDOM from 'react-dom'
-import { io, Socket } from 'socket.io-client';
-import { ClientToServerEvents }  from '../../server/types';
 import { useSockets } from '../context/socket.context';
 
-interface SocketIo  {
-  roomName: string;
-}
 export interface IAddNewRoomProps {
-    selecor?: string;
-    open: boolean;
-    onClose: () => void;
+  selecor?: string;
+  open: boolean;
+  onClose: () => void;
 }
 
 const AddNewRoom = ({ open, onClose }) => {
   const [roomName, setRoomName] = useState<string>('');
   const [newRoom, setNewRoom] = useState({});
   //const navigate = useNavigate();
-  const { username } = useSockets();
-  const socket = useRef<Socket>();
+  const { username, socket, createRoom } = useSockets();
+ 
 
   const ref = useRef<Element>(null);
 
   useEffect(() => {
-      ref.current = document.querySelector('.add-new-room')
+    ref.current = document.querySelector('.add-new-room')
 
-      if (!ref.current) {
-          const div = document.createElement('div');
-          div.setAttribute('id', 'add-new-room');
-          document.body.appendChild(div);
-          ref.current = div;
-      }
-    }, []);
+    if (!ref.current) {
+      const div = document.createElement('div');
+      div.setAttribute('id', 'add-new-room');
+      document.body.appendChild(div);
+      ref.current = div;
+    }
+  }, []);
 
 
-    if (!open) return null;
+  if (!open) return null;
 
-    const newRooms = async (currentUser, roomName: string) => {
+  const newRooms = (currentUser, roomName: string) => {
     setNewRoom({ currentUser, roomName });
     //navigate('/');
     return;
@@ -48,7 +43,12 @@ const AddNewRoom = ({ open, onClose }) => {
     e.preventDefault();
     setRoomName(roomName)
     newRooms(username, roomName);
-    createRoom(socket.current);
+    const room = roomName;
+    if (!room.length) {
+      console.log('Ogiltigt namn på rum...');
+      return;
+    }
+    createRoom(room);
     onClose(true);
     return;
   };
@@ -57,12 +57,7 @@ const AddNewRoom = ({ open, onClose }) => {
     setRoomName(e.target.value);
   };
 
-   const createRoom = (SocketIo) => {
-    socket.emit('create-room', roomName);
-    console.log(roomName);
-    return;
-  }
-  
+
 return ReactDOM.createPortal(
     <>
       <div style={overlayStyles} />
@@ -70,10 +65,10 @@ return ReactDOM.createPortal(
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2>
             Create a new room
-            </h2>
+          </h2>
           <form onSubmit={handleOnSubmit}>
             <input
-            style={{ width: '100%', height: '3rem', marginBottom: '1rem', fontSize: '1.5rem' }}
+              style={{ width: '100%', height: '3rem', marginBottom: '1rem', fontSize: '1.5rem' }}
               type="text"
               value={roomName}
               onChange={handleOnChange}
@@ -94,6 +89,7 @@ return ReactDOM.createPortal(
     document.getElementById('add-new-room')!
   );
 }
+
 const modalStyles: CSSProperties = {
   position: 'fixed',
   top: '56%',

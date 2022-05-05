@@ -1,6 +1,6 @@
 import React, { CSSProperties, useState } from 'react';
 import AddNewRoom from './AddNewRoom';
-import { Icon } from '@iconify/react';
+//import { Icon } from '@iconify/react';
 import { useSockets } from '../context/socket.context';
 
 const ChatRoomSideBar = () => {
@@ -33,7 +33,7 @@ const ChatRoomSideBar = () => {
       className="button" 
       style={{marginBottom: "1rem"}}
       onClick={handleOnLogOut}>
-        <Icon icon="bx:log-out" />
+    {/*     <Icon icon="bx:log-out" /> */}
       </button>
     </div>
   );

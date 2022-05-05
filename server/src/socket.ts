@@ -1,6 +1,5 @@
-import { SocketOptions } from "dgram";
 import { Server, Socket } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { getRooms } from "./roomStore";
 import logger from "./utils/logo";
 
 const EVENTS = {
@@ -16,6 +15,19 @@ export function socket({ io }: { io: Server }) {
     socket.on("chat message", (message) => {
       console.log(message);
       io.emit("chat message", message);
+    });
+
+    socket.on("join", (room) => {
+      const shouldBroadcastRooms: boolean = !getRooms(io).includes(room);
+      console.log(getRooms(io).includes(room));
+
+      socket.join(room);
+
+      if (shouldBroadcastRooms) {
+        io.emit("roomList", getRooms(io));
+      }
+
+      socket.emit("joined", room);
     });
   });
 }
