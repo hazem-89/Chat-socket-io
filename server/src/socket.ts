@@ -9,7 +9,8 @@ const EVENTS = {
 function socket({ io }: { io: Server }) {
   logger.info("Socket connected");
 
-  io.use((socket: Socket, next) => {
+  /*  io.use((socket: Socket, next) => {
+    console.log("ERRROORORORO");
     const username: string = socket.handshake.auth.username;
     if (!username) {
       return next(new Error("invalid username"));
@@ -17,7 +18,7 @@ function socket({ io }: { io: Server }) {
 
     socket.data.username = username;
     next();
-  });
+  }); */
 
   //   io.use((socket: Socket, next) => {
   //   const currentRoom: string = socket.handshake.auth.currentRoom;
@@ -41,6 +42,7 @@ function socket({ io }: { io: Server }) {
     });
 
     socket.on("join", (room) => {
+      console.log("JOIIIINAs");
       const shouldBroadcastRooms: boolean = !getRooms(io).includes(room);
       console.log(getRooms(io).includes(room));
 

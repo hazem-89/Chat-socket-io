@@ -21,8 +21,7 @@ export interface ISocketContext {
   createRoom: Function;
   sendMessage: Function;
 }
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-  io(SOCKET_URL);
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SOCKET_URL);
 
 const SocketContext = createContext<ISocketContext>({
   socket,
@@ -43,14 +42,14 @@ const SocketProvider = (props: any) => {
   //const [rooms, setRooms] = useState<string[]>([]);
 
   useEffect(() => {
+    /* socket.connect() */
     socket.on('welcome', (data) => {
       console.log(data, socket.id);
-
-      socket.on('connected', (username) => {
-        console.log(username);
-      });
     });
-
+    
+    socket.on('connected', (username) => {
+      console.log(username);
+    });
 
     socket.on("roomList", (rooms) => {
       console.log(rooms)
@@ -59,9 +58,11 @@ const SocketProvider = (props: any) => {
     socket.on("joined", (room) => {
       console.log("Joined room: ", room)
     })
+    
   }, []);
 
   socket.on('connect_error', (err) => {
+    console.log(err)
     console.log('ogiltigt användarnamn');
   });
 
@@ -81,10 +82,9 @@ const SocketProvider = (props: any) => {
 
   const createRoom = (room) => {
     joinedRoom = room;
+    console.log("join", room);
     socket.emit('join', room);
     setCurrentRoom(room);
-    socket.connect();
-    console.log(room);
     return;
   }
 

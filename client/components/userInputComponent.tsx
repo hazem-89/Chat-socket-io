@@ -25,7 +25,7 @@ const UserInputComponent = () => {
       document.body.appendChild(div);
       parent.current = div;
     }
-  }, []);
+  }, [setUsername]);
 
   // const DOMdiv = document.getElementById('usernameInput')
 
@@ -38,7 +38,7 @@ const UserInputComponent = () => {
       setUsername(value);
       socket.auth = { username: value };
       // localStorage.setItem('user', value);
-      socket.connect();
+
     
      
   };
