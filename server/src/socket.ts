@@ -8,8 +8,15 @@ const EVENTS = {
 function socket({io}: {io: Server}) {
   logger.info("Socket connected")
 
-  io.on("EVENTS.connection", (socket: Socket) => {
-    logger.info("User is connected ${socket.id}")
+  io.on(EVENTS.connection, (socket: Socket) => {
+
+    logger.info(`User is connected ${socket.id}`)
+
+
+    socket.on("chat message", (message) => {
+      console.log(message);
+      io.emit("chat message", message);
+    })
   })
 }
 

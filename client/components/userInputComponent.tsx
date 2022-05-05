@@ -14,6 +14,9 @@ const UserInputComponent = () => {
 //    const wrapper = document.body;
 
   useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) setUsername(user);
+
     parent.current = document.querySelector('.usernameInput');
 
     if (!parent.current) {
@@ -22,20 +25,20 @@ const UserInputComponent = () => {
       document.body.appendChild(div);
       parent.current = div;
     }
-    console.log(parent.current)
+
   }, []);
 
-console.log(parent.current)
+
   // const DOMdiv = document.getElementById('usernameInput')
 
   const handleOnChange = (e: any) => {
-    console.log(e.target.value);
+
     setValue(e.target.value);
   };
 
   const handleOnSubmit = () => {
     setUsername(value);
-    localStorage.setItem('username', value);
+    localStorage.setItem('user', value);
   };
 
   return (
