@@ -1,15 +1,29 @@
 import { height } from "@mui/system";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import ChatBubble from "./ChatBubble";
+import {useSockets} from '../context/socket.context'
 
 const ChatRoom = () => {
+    const [value, setValue] = useState<string>("");
+    const { sendMessage } = useSockets();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(value)
+        sendMessage(value);
+    }
+    const handleChange = (e) => {
+
+        setValue(e.target.value)
+    }
+
     return (
         <div style={rootstyle}>
             <div style={chatsDivStyle}>
                 <ChatBubble />
             </div>
-            <form action="" style={formStyle}>
-                <input style={inputStyle} type="text" placeholder="Join the conversation..."/>
+            <form action="" style={formStyle} onSubmit={handleSubmit}>
+                <input value={value} onChange={handleChange} style={inputStyle} type="text" placeholder="Join the conversation..."/>
             </form>
         </div>
     )
