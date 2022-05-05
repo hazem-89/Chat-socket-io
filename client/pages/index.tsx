@@ -7,15 +7,14 @@ import ChatRoom from '../components/ChatRoom'
 import ChatRoomSideBar from '../components/ChatRoomSideBar';
 
 export default function Home() {
-  const { socket, username, setUsername, localUsernameData } = useSockets();
+  const { socket, username, setUsername } = useSockets();
+  const usernameRef = useRef(null);
   const [isInputOpen, setIsInputOpen] = useState(true);
-  
   
   return (
     <div style={rootstyle}>
-
-      <Rooms />
-      {!localUsernameData ? (
+      <ChatRoomSideBar/>
+      {!username ? (
         <div style={usernameInputDivStyle}>
           <UserInputComponent />
         </div>
