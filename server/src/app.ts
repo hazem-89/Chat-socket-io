@@ -5,6 +5,7 @@ import cors from "cors";
 import config from "config";
 import logger from "./utils/logger";
 import socket from "./socket"
+import { ClientToServerEvents, InterServerEvents, ServerSocketData, ServerToClientEvents } from "../types";
 
 const port = config.get<number>("port")
 const host = config.get<string>("host")
@@ -12,7 +13,7 @@ const corsOrigin = config.get<string>("corsOrigin")
 const app = express();
 const httpServer = createServer(app)
 
-const io = new Server(httpServer, {
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, ServerSocketData>(httpServer, {
   cors:{
     origin: corsOrigin,
     credentials: true,

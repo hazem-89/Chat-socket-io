@@ -1,25 +1,42 @@
+
 import { Server, Socket } from "socket.io";
 import logger from "./utils/logger";
 
 const EVENTS = {
   connection: "connection",
 }
-const users = {};
-function socket({io}: {io: Server}) {
-  logger.info("Socket connected")
 
-  io.on("connection", (socket) => {
-    logger.info("User is connected")
+function socket({ io }: { io: Server }) {
+  logger.info('Socket connected');
 
-   socket.emit("message", "Welcome to ChaTea")
+  io.use((socket: Socket, next) => {
+    const username: string = socket.handshake.auth.username;
+    if (!username) {
+      return next(new Error('invalid username'));
+    }
+    
+    socket.data.username = username;
+    next();
+  });
 
-   socket.broadcast.emit("message", "user has joined the chat")
+  io.on(EVENTS.connection, (socket: Socket) => {
+    logger.info(`User is connected ${socket.id}`);
 
+    socket.emit('welcome', `welcome new user!`);
 
-   socket.on("disconnect", () => {
+    socket.emit('connected', socket.data.username);
+
+    socket.on('chat-message', (message) => {
+      console.log(message);
+      // io.emit('chat message', message);
+    });
+    socket.on("disconnect", () => {
      io.emit("message", "User left the chat")
    })
-  })
+
+    // socket.on('send-message', (message) => {});
+  });
+
 }
 
 export default socket;

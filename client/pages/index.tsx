@@ -3,6 +3,8 @@ import UserInputComponent from '../components/userInputComponent';
 import { Rooms } from '../components/Rooms';
 import { CSSProperties, useRef, useState } from 'react';
 import { ISocketContext } from '../context/socket.context';
+import ChatRoom from '../components/ChatRoom'
+import ChatRoomSideBar from '../components/ChatRoomSideBar';
 
 export default function Home() {
   const { socket, username, setUsername, localUsernameData } = useSockets();
@@ -11,6 +13,7 @@ export default function Home() {
   
   return (
     <div style={rootstyle}>
+
       <Rooms />
       {!localUsernameData ? (
         <div style={usernameInputDivStyle}>
@@ -19,14 +22,15 @@ export default function Home() {
       ) : (
         null
       )}
+      <ChatRoom/>
     </div>
   );
 }
 
 const rootstyle: CSSProperties = {
   width: '100%',
-  height: '100%',
-  border: '2px solid blue',
+  height: '100vh',
+  // border: '2px solid blue',
 };
 
 const usernameInputDivStyle: CSSProperties = {

@@ -1,13 +1,16 @@
 
-//alla evernts som kommer ifrån servern till clienten
+
+//alla events som kommer ifrån servern till clienten
 export interface ServerToClientEvents { 
   "chat message": (message: string) => void;
   welcome: (message: string) => void;
+  connected: (username: string) => void;
 }
 
-/** Alla evenrts som skickas från clienten till server */
+/** Alla events som skickas från clienten till server */
 export interface ClientToServerEvents { 
-  "chat message": (message: string) => void;
+  "chat-message": (message: any) => void;
+
 }
 
 /** typer av funktioner som körs inom servern */
@@ -22,6 +25,5 @@ export interface InterServerEvents {
  * Datan som sparas här är datan som kommer behövas över tid senare.
  */
 export interface ServerSocketData {
-  name: string;
-  age: number;
+  username: string;
 }

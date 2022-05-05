@@ -5,7 +5,7 @@ export const Rooms = () => {
   return (
     <div>
       <h1>New Room</h1>
-    <ChatRoomSideBar/>
+    
     </div>
   )
 }
