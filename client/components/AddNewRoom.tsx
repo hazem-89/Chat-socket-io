@@ -1,7 +1,13 @@
-import React, { CSSProperties, FormEvent, useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, FormEvent, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ReactDOM from 'react-dom'
+import { io, Socket } from 'socket.io-client';
+import { ClientToServerEvents }  from '../../server/types';
+import { useSockets } from '../context/socket.context';
 
+interface SocketIo  {
+  roomName: string;
+}
 export interface IAddNewRoomProps {
     selecor?: string;
     open: boolean;
@@ -9,11 +15,11 @@ export interface IAddNewRoomProps {
 }
 
 const AddNewRoom = ({ open, onClose }) => {
-
-    const [roomName, setRoomName] = useState<string>('');
+  const [roomName, setRoomName] = useState<string>('');
   const [newRoom, setNewRoom] = useState({});
   //const navigate = useNavigate();
-  //const { currentUser } = userContext();
+  const { username } = useSockets();
+  const socket = useRef<Socket>();
 
   const ref = useRef<Element>(null);
 
@@ -32,16 +38,17 @@ const AddNewRoom = ({ open, onClose }) => {
     if (!open) return null;
 
     const newRooms = async (currentUser, roomName: string) => {
-    //const newWallPost = { username: currentUser, body: roomName };
     setNewRoom({ currentUser, roomName });
-    //let response = await makeReq('/newroom/', 'POST', newRoom);
     //navigate('/');
     return;
   };
 
+
   const handleOnSubmit = (e: FormEvent) => {
     e.preventDefault();
-    //newRooms(currentUser, roomName);
+    setRoomName(roomName)
+    newRooms(username, roomName);
+    createRoom(socket.current);
     onClose(true);
     return;
   };
@@ -49,6 +56,12 @@ const AddNewRoom = ({ open, onClose }) => {
   const handleOnChange = (e) => {
     setRoomName(e.target.value);
   };
+
+   const createRoom = (SocketIo) => {
+    socket.emit('create-room', roomName);
+    console.log(roomName);
+    return;
+  }
   
 return ReactDOM.createPortal(
     <>
