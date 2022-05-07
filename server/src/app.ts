@@ -4,28 +4,37 @@ import { Server } from "socket.io";
 import cors from "cors";
 import config from "config";
 import logger from "./utils/logo";
-import socket from "./socket"
-import { ClientToServerEvents, InterServerEvents, ServerSocketData, ServerToClientEvents } from "../types";
+import socket from "./socket";
+import {
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerSocketData,
+  ServerToClientEvents,
+} from "../types";
 
-const port = config.get<number>("port")
-const host = config.get<string>("host")
-const corsOrigin = config.get<string>("corsOrigin")
+const port = config.get<number>("port");
+const host = config.get<string>("host");
+const corsOrigin = config.get<string>("corsOrigin");
 const app = express();
-const httpServer = createServer(app)
+const httpServer = createServer(app);
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, ServerSocketData>(httpServer, {
-  cors:{
+const io = new Server<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  ServerSocketData
+>(httpServer, {
+  cors: {
     origin: corsOrigin,
     credentials: true,
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
-app.get('/', (_, res) => res.send(`Server is running`));
-
+app.get("/", (_, res) => res.send(`Server is running`));
 
 httpServer.listen(port, host, () => {
   logger.info(`Server is running`);
   logger.info(`http://${host}:${port}`);
-  socket({ io })
-  
-})
+  socket({ io });
+});
